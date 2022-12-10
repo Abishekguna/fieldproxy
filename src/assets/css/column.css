@@ -1,0 +1,29 @@
+.menu {
+    display: inline-block;
+    height: 100vh;
+  }
+  .m{
+    cursor: pointer;
+  }
+  a {
+    
+    color: rgb(237, 241, 241);
+  }
+  body{
+    background-color: rgb(209, 157, 88);
+  }
+  .overall {
+    display: flex;
+  }
+  .overall table,
+  thead,
+  tbody,
+  th,
+  td,
+  tr {
+    border: 2px solid rgb(13, 13, 13);
+  }
+  .column {
+    margin-left: 100px;
+    padding-top: 30px;
+  }
