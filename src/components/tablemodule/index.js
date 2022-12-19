@@ -8,7 +8,9 @@ export const TableModule = () => {
   //sending value by dispatch to redux
   const dispatch = useDispatch();
   const storeData = useSelector((store) => store.tableData);
-  const [edit, setEdit] = useState(false);
+
+  const [editOption, setEditOption] = useState(false);
+  
   //name
   const [name, setName] = useState("");
   //   //date
@@ -21,7 +23,7 @@ export const TableModule = () => {
   let navigate = useNavigate();
 
   function onEdit(index, dat) {
-    setEdit(true);
+    setEditOption(true);
 
     setName(dat.name);
     setDate(dat.date);
@@ -33,18 +35,32 @@ export const TableModule = () => {
     navigate("/view");
   }
   
-  function onAdd() {
+  const onSave = () => {
     let updatedValue = [...storeData];
-
-    updatedValue[indexUpdate] = {
-      name: name,
+    if (editOption) {
+      updatedValue[indexUpdate] = {
+        name: name,
       date: date,
       age: age,
+      };
 
-    };
+      dispatch({ type: "edit", payload: updatedValue });
+      console.log(updatedValue, "edit");
+    } else {
+      updatedValue.push({
+        name: name,
+      date: date,
+      age: age,
+      });
+      console.log(updatedValue, "save");
+    }
+    setEditOption(false);
+
     dispatch({ type: "table", payload: updatedValue });
-    setEdit(false);
-  }
+    console.log(updatedValue, "save dispatch");
+    setEditOption(false)
+  };
+
   const onDelete = (index) => {
     let updatedValue = [...storeData];
     updatedValue.splice(index, 1);
@@ -97,10 +113,11 @@ export const TableModule = () => {
         </table>
       </div>
       <div>
-      {edit ? (
+      
         <div>
           <div className="container text-center ">
-            <h1 className="text-center">Edit Module</h1>
+            <h1 className="text-center">{editOption ? "Edit Module" : "Add Module"}
+</h1>
             <table className="table container  text-light w-75">
               <thead className="bg-dark text-light">
                 <tr>
@@ -145,7 +162,11 @@ export const TableModule = () => {
 
                   <td>
                     {" "}
-                    <button onClick={onAdd}>Submit</button>{" "}
+                    <button onClick={() => onSave()}>
+          {editOption ? "Update" : "Add"}
+        </button>
+
+
                   </td>
                  
                 </tr>
@@ -153,9 +174,7 @@ export const TableModule = () => {
             </table>
           </div>
         </div>
-      ) : (
-        ""
-      )}{" "}
+      
       </div>
     </div>
   );
